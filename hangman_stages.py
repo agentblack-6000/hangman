@@ -1,3 +1,7 @@
+"""
+A list of Hangman Stages ASCII art
+"""
+
 HANGMAN_STAGES = [r'''
   +---+
   |   |
@@ -36,15 +40,18 @@ HANGMAN_STAGES = [r'''
 =========''', r'''
   +---+
   |   |
-  0   |
+  O   |
  /|\  |
  /    |
       |
 =========''', r'''
   +----+
   |    |
-  0    |
+  O    |
  /|\   |
  / \   |
        |
 =========''']
+
+ANIMALS = ['aardvark', 'bat', 'camel', 'chimpanzee', 'cobra', 'giraffe', 'horse', 'hyena', 'koala',
+           'leopard', 'lion', 'otter', 'platypus', 'shark', 'spider', 'squirrel', 'tiger', 'zebra']
