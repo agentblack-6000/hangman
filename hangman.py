@@ -6,15 +6,26 @@ import random
 from tkinter import Tk, Label, Entry, Button
 from hangman_stages import HANGMAN_STAGES, ANIMALS
 
-BACKGROUND_COLOR = "#144272"
-DEFEAT = "#ff0000"
-VICTORY = "#00ff00"
-
 
 class Hangman:
     """
     An implementation of Hangman with a GUI interface.
     """
+    # Constants for GUI colors
+    BACKGROUND_COLOR = "#144272"
+    DEFEAT = "#ff0000"
+    VICTORY = "#00ff00"
+    USER_INPUTS = "#0A2647"
+
+    # Constants for width and height
+    WIDTH = 500
+    HEIGHT = 600
+
+    # Constants for font
+    FONT = ("Arial", 20, "normal")
+    LARGE_FONT = ("Arial", 25, "normal")
+    HANGMAN_FONT = ("Arial", 50, "normal")
+
     def __init__(self):
         """
         Sets up the GUI interface to play Hangman.
@@ -23,23 +34,23 @@ class Hangman:
         # Creates the main game window
         self.root = Tk()
         self.root.title("Hangman")
-        self.root.minsize(width=500, height=600)
-        self.root.config(background=BACKGROUND_COLOR)
+        self.root.minsize(width=Hangman.WIDTH, height=Hangman.HEIGHT)
+        self.root.config(background=Hangman.BACKGROUND_COLOR)
 
         # Dummy widget to help grid positioning
-        self.dummy_widget = Label(background=BACKGROUND_COLOR, padx=250)
+        self.dummy_widget = Label(background=Hangman.BACKGROUND_COLOR, padx=250)
         self.dummy_widget.grid(column=1, row=1)
 
         # The entry field to accept guesses from the user
-        self.guess_input = Entry(width=3, font=("Arial", 25, "normal"))
-        self.guess_input.config(background="#0A2647", highlightthickness=0, borderwidth=0)
+        self.guess_input = Entry(width=3, font=Hangman.LARGE_FONT)
+        self.guess_input.config(background=Hangman.USER_INPUTS, highlightthickness=0, borderwidth=0)
         self.guess_input.grid(column=1, row=3)
 
         # The submit button to submit the guesses in the entry
         self.submit_button = Button(text="Guess", command=self.update_hangman, highlightthickness=0,
-                                    font=("Helvetica", 20, "bold"), borderwidth=0,
+                                    font=Hangman.FONT, borderwidth=0,
                                     width=6, height=2)
-        self.submit_button.config(fg="#0A2647")
+        self.submit_button.config(fg=Hangman.USER_INPUTS)
         self.submit_button.grid(column=1, row=4, pady=20)
 
         # The guesses array to display underneath the submit button
@@ -51,21 +62,19 @@ class Hangman:
         self.word = ""
         self.hangman_word = []
 
-        self.guessed_font = ("Arial", 20, "normal")
-
         # The guessed letters
         self.guessed = Label(text="  ".join(self.guesses),
-                             background=BACKGROUND_COLOR, font=self.guessed_font)
+                             background=Hangman.BACKGROUND_COLOR, font=Hangman.FONT)
         self.guessed.grid(column=1, row=5, pady=15)
 
         # The hangman text, i.e. the alphabets and the dashes
-        self.hangman = Label(text="---", font=("Arial", 50, "normal"))
-        self.hangman.config(background=BACKGROUND_COLOR)
+        self.hangman = Label(text="---", font=Hangman.HANGMAN_FONT)
+        self.hangman.config(background=Hangman.BACKGROUND_COLOR)
         self.hangman.grid(column=1, row=6)
 
         # The hangman stages
-        self.hangman_stage = Label(text="", font=("Arial", 50, "normal"))
-        self.hangman_stage.config(background=BACKGROUND_COLOR)
+        self.hangman_stage = Label(text="", font=Hangman.HANGMAN_FONT)
+        self.hangman_stage.config(background=Hangman.BACKGROUND_COLOR)
         self.hangman_stage.grid(column=1, row=7)
 
         # Setup random word, and configure dashes
@@ -168,7 +177,7 @@ class Hangman:
 
             # Checks for game over
             if "__" not in self.hangman_word:
-                self.game_over(VICTORY)
+                self.game_over(Hangman.VICTORY)
         else:
             # Updates the hangman stage as letter is not in word
             self.tries += 1
@@ -176,11 +185,11 @@ class Hangman:
 
             # Checks for defeat, otherwise updates guesses
             if self.tries >= len(HANGMAN_STAGES):
-                self.game_over(DEFEAT)
+                self.game_over(Hangman.DEFEAT)
             else:
                 self.guesses.append(text)
                 self.guessed = Label(text="  ".join(sorted(self.guesses)),
-                                     background=BACKGROUND_COLOR, font=self.guessed_font)
+                                     background=Hangman.BACKGROUND_COLOR, font=Hangman.FONT)
                 self.guessed.grid(column=1, row=5)
 
     def start_game(self):
