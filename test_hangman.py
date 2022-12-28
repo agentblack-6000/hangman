@@ -1,5 +1,5 @@
 """
-Unit tests for functions implemented in class Hangman
+Unit tests for methods implemented in class Hangman
 """
 from hangman import Hangman
 from hangman_stages import ANIMALS
