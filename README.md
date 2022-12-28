@@ -5,6 +5,7 @@ a list of guessed alphabets
 
 ## Project Overview
 An implementation of Hangman with a GUI.
+
 ![Hangman](hangman_1.png)
 
 ## Project Files
