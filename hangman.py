@@ -82,6 +82,71 @@ class Hangman:
         self.start_game()
         self.root.mainloop()
 
+    def update_hangman(self):
+        """
+        Updates the guesses array to reflect guesses, the hangman stage,
+        as well as the hangman text.
+        """
+        # Converts guess to lower case
+        text = self.guess_input.get().lower()
+
+        # Checks if letter is one character and is an alphabet
+        if not text.isalpha() or len(text) > 1:
+            pass
+        elif text in self.word:
+            # Updates the displayed text
+            new_hangman_text = self.update_hangman_text(self.word, text, self.hangman_word)
+            self.hangman.config(text=" ".join(new_hangman_text))
+
+            # Checks for game over
+            if "__" not in self.hangman_word:
+                self.game_over(Hangman.VICTORY)
+        else:
+            # Updates the hangman stage as letter is not in word
+            self.tries += 1
+            self.hangman_stage.config(text=HANGMAN_STAGES[self.tries - 1])
+
+            # Checks for defeat, otherwise updates guesses
+            if self.tries >= len(HANGMAN_STAGES):
+                self.game_over(Hangman.DEFEAT)
+            else:
+                self.guesses.append(text)
+                self.guessed = Label(text="  ".join(sorted(self.guesses)),
+                                     background=Hangman.BACKGROUND_COLOR, font=Hangman.FONT)
+                self.guessed.grid(column=1, row=5)
+
+    def start_game(self):
+        """Starts game generating the dashes ('__') and updating the GUI."""
+
+        # Generates the starting __ in the hangman word
+        for _ in self.word:
+            self.hangman_word.append("__")
+
+        # Updates the GUI
+        self.hangman.config(text=" ".join(self.hangman_word))
+
+    def game_over(self, color: str):
+        """
+        Colors the GUI according to the color passed, and then destroys input and submit.
+
+        :param color: A string containing an RGB code or a color
+        :type color: str
+        """
+
+        # Update the GUI background and reveal answer
+        self.hangman.config(text=" ".join(self.word.upper()))
+        self.root.config(background=color)
+        self.hangman.config(background=color)
+        self.hangman_stage.config(background=color)
+        self.dummy_widget.config(background=color)
+        self.submit_button.config(background=color)
+        self.guessed.config(background=color)
+        self.guess_input.config(background=color)
+
+        # Destroy input and submit
+        self.guess_input.destroy()
+        self.submit_button.destroy()
+
     @staticmethod
     def generate_random_word() -> str:
         """
@@ -158,71 +223,6 @@ class Hangman:
 
         # Returns the updated list
         return hangman_word
-
-    def update_hangman(self):
-        """
-        Updates the guesses array to reflect guesses, the hangman stage,
-        as well as the hangman text.
-        """
-        # Converts guess to lower case
-        text = self.guess_input.get().lower()
-
-        # Checks if letter is one character and is an alphabet
-        if not text.isalpha() or len(text) > 1:
-            pass
-        elif text in self.word:
-            # Updates the displayed text
-            new_hangman_text = self.update_hangman_text(self.word, text, self.hangman_word)
-            self.hangman.config(text=" ".join(new_hangman_text))
-
-            # Checks for game over
-            if "__" not in self.hangman_word:
-                self.game_over(Hangman.VICTORY)
-        else:
-            # Updates the hangman stage as letter is not in word
-            self.tries += 1
-            self.hangman_stage.config(text=HANGMAN_STAGES[self.tries - 1])
-
-            # Checks for defeat, otherwise updates guesses
-            if self.tries >= len(HANGMAN_STAGES):
-                self.game_over(Hangman.DEFEAT)
-            else:
-                self.guesses.append(text)
-                self.guessed = Label(text="  ".join(sorted(self.guesses)),
-                                     background=Hangman.BACKGROUND_COLOR, font=Hangman.FONT)
-                self.guessed.grid(column=1, row=5)
-
-    def start_game(self):
-        """Starts game generating the dashes ('__') and updating the GUI."""
-
-        # Generates the starting __ in the hangman word
-        for _ in self.word:
-            self.hangman_word.append("__")
-
-        # Updates the GUI
-        self.hangman.config(text=" ".join(self.hangman_word))
-
-    def game_over(self, color: str):
-        """
-        Colors the GUI according to the color passed, and then destroys input and submit.
-
-        :param color: A string containing an RGB code or a color
-        :type color: str
-        """
-
-        # Update the GUI background and reveal answer
-        self.hangman.config(text=" ".join(self.word.upper()))
-        self.root.config(background=color)
-        self.hangman.config(background=color)
-        self.hangman_stage.config(background=color)
-        self.dummy_widget.config(background=color)
-        self.submit_button.config(background=color)
-        self.guessed.config(background=color)
-        self.guess_input.config(background=color)
-
-        # Destroy input and submit
-        self.guess_input.destroy()
-        self.submit_button.destroy()
 
 
 hangman = Hangman()
